@@ -17,6 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import tw.edu.pu.csim.tcyang.coroutines.ui.theme.CoroutinesTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,10 +44,16 @@ fun Greeting(modifier: Modifier) {
         Button(
             modifier = modifier,
             onClick = {
-                counter ++
+                GlobalScope.launch {
+                    counter = 0
+                    while (counter < 20){
+                        counter ++
+                        delay(1000)
+                    }
+                }
             }
         ) {
-            Text(text = "加1")
+            Text(text = "每秒加1，計時20秒")
         }
         Text(text = counter.toString())
     }
