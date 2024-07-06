@@ -8,16 +8,16 @@ import kotlinx.coroutines.launch
 class Game(val scope: CoroutineScope) {
     var counter = 0
     val state = MutableStateFlow(0)
-    var temp = 0
+    val background = Background()
 
     fun Play(){
         scope.launch {
             counter = 0
-            while (counter < 20) {
+            while (counter < 2000) {
+                background.Roll()
                 counter++
-                temp++
                 state.emit(counter)
-                delay(1000)
+                delay(25)
             }
         }
     }
