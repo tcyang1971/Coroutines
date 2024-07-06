@@ -37,15 +37,17 @@ class MainActivity : ComponentActivity() {
 fun Greeting(modifier: Modifier, game: Game) {
     val counter by game.state.collectAsState()
 
-    Column {
-        Button(
-            modifier = modifier,
-            onClick = {
-                game.Play()
+    counter.let {
+        Column {
+            Button(
+                modifier = modifier,
+                onClick = {
+                    game.Play()
+                }
+            ) {
+                Text(text = "每秒加1，計時20秒")
             }
-        ) {
-            Text(text = "每秒加1，計時20秒")
+            Text(text = game.temp.toString())
         }
-        Text(text = game.temp.toString())
     }
 }

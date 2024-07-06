@@ -16,8 +16,8 @@ class Game(val scope: CoroutineScope) {
             while (counter < 20) {
                 counter++
                 temp++
-                delay(1000)
                 state.emit(counter)
+                delay(1000)
             }
         }
     }
