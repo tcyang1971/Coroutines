@@ -46,6 +46,6 @@ fun Greeting(modifier: Modifier, game: Game) {
         ) {
             Text(text = "每秒加1，計時20秒")
         }
-        Text(text = counter.toString())
+        Text(text = game.temp.toString())
     }
 }
