@@ -11,6 +11,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import tw.edu.pu.csim.tcyang.coroutines.ui.theme.CoroutinesTheme
@@ -33,6 +35,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(modifier: Modifier, game: Game) {
+    val counter by game.state.collectAsState()
+
     Column {
         Button(
             modifier = modifier,
@@ -42,6 +46,6 @@ fun Greeting(modifier: Modifier, game: Game) {
         ) {
             Text(text = "每秒加1，計時20秒")
         }
-        Text(text = game.counter.toString())
+        Text(text = counter.toString())
     }
 }
