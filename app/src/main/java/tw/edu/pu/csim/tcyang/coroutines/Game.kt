@@ -17,12 +17,17 @@ class Game(context: Context, val scope: CoroutineScope) {
     private val px = displayMetrics.density  //dp轉像素的倍率 (1dp的像素)
 
     val background = Background(ScreenWidth)
+    val boy = Boy(ScreenWidth, ScreenHeight, px)
 
     fun Play(){
         scope.launch {
             counter = 0
             while (counter < 2000) {
                 background.Roll()
+                if (counter % 3 == 0){
+                    boy.Walk()
+                }
+
                 counter++
                 state.emit(counter)
                 delay(25)
