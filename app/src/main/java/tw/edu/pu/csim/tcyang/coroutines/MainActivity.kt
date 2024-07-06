@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
@@ -89,6 +91,12 @@ fun Greeting(modifier: Modifier, game: Game) {
                     .width(100.dp)
                     .height(220.dp)
                     .offset { IntOffset(game.boy.x, game.boy.y) }
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = { game.boy.y = game.boy.y - 70},
+                            onDoubleTap = {game.boy.y = game.boy.y + 70},
+                        )
+                    }
             )
         }
 
