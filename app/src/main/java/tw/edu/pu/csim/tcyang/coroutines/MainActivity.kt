@@ -100,7 +100,7 @@ fun Greeting(modifier: Modifier, game: Game) {
             ) {
                 Text(text = "遊戲開始")
             }
-            Text(text = game.background.x1.toString())
+            Text(text = "成績：" + game.score.toString() + "分")
         }
     }
 }

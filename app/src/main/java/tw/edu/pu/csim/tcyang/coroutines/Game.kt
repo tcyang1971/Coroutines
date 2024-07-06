@@ -19,6 +19,8 @@ class Game(context: Context, val scope: CoroutineScope) {
     val background = Background(ScreenWidth)
     val boy = Boy(ScreenWidth, ScreenHeight, px)
 
+    var score = 0
+
     fun Play(){
         scope.launch {
             counter = 0
@@ -26,6 +28,9 @@ class Game(context: Context, val scope: CoroutineScope) {
                 background.Roll()
                 if (counter % 3 == 0){
                     boy.Walk()
+                    if (boy.ReachRight()){  //小男孩到右邊界，加1分
+                        score ++
+                    }
                 }
 
                 counter++
