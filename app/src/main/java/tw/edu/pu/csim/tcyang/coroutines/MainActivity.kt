@@ -1,5 +1,6 @@
 package tw.edu.pu.csim.tcyang.coroutines
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,9 +21,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -45,6 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Greeting(modifier: Modifier, game: Game) {
     val counter by game.state.collectAsState()
@@ -114,16 +120,55 @@ fun Greeting(modifier: Modifier, game: Game) {
             )
         }
 
-        Column {
-            Button(
-                modifier = modifier,
-                onClick = {
-                    game.Play()
-                }
+        if (!game.isPlaying && !game.gameoverDialog){
+            Box(
+                modifier = Modifier.fillMaxSize(), Alignment.Center
             ) {
-                Text(text = "遊戲開始")
+                Image(
+                    painter = painterResource(id = R.drawable.start),
+                    contentDescription = "遊戲開始",
+                    modifier = Modifier.pointerInteropFilter {
+                        game.Play()
+                        false
+                    }
+                )
             }
-            Text(text = "成績：" + game.score.toString() + "分")
         }
+
+        Box(
+            modifier = Modifier.fillMaxSize(), Alignment.TopEnd
+        ){
+            Text(
+                modifier = modifier,
+                text = "成績：" + game.score.toString() + "分"
+            )
+        }
+
+        val activity = (LocalContext.current as? Activity)
+        if (game.gameoverDialog) {
+            androidx.compose.material3.AlertDialog(
+                onDismissRequest = {
+                    game.gameoverDialog = false  //點到對話框外面
+                },
+                title = {
+                    Text(text = "遊戲結束")
+                },
+                text = {
+                    Text("您此次的成績為：${game.score}分，還要再玩嗎？")
+                },
+
+                confirmButton = {
+                    Button(
+                        onClick = {  game.Play() }
+                    ) {  Text("一定要哦")  }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {  activity?.finish() }
+                    ) { Text("結束再見") }
+                }
+            )
+        }
+
     }
 }

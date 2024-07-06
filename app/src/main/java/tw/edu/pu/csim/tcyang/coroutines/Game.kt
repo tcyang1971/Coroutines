@@ -1,6 +1,7 @@
 package tw.edu.pu.csim.tcyang.coroutines
 
 import android.content.Context
+import android.media.MediaPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,16 +23,23 @@ class Game(context: Context, val scope: CoroutineScope) {
 
     var score = 0
     var isPlaying = false
+    var gameoverDialog = false  //遊戲結束對話框
+    //背景音樂
+    private var mper1 = MediaPlayer.create(context, R.raw.lastletter)
+    //結束音樂
+    private var mper2 = MediaPlayer.create(context, R.raw.gameover)
 
     fun Play(){
         score = 0
         boy.Reset()
         virus.Reset()
         isPlaying = true
+        gameoverDialog = false
 
         scope.launch {
             counter = 0
             while (isPlaying) {
+                mper1.start()  //播放背景音樂
                 background.Roll()
                 if (counter % 3 == 0){
                     boy.Walk()
@@ -55,6 +63,12 @@ class Game(context: Context, val scope: CoroutineScope) {
                 state.emit(counter)
                 delay(25)
             }
+
+            //遊戲結束處理
+            gameoverDialog = true
+            mper1.pause()
+            mper2.start()
+            state.emit(counter + 1) //改變狀態，讓UI更新
         }
     }
 }
