@@ -1,14 +1,22 @@
 package tw.edu.pu.csim.tcyang.coroutines
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class Game(val scope: CoroutineScope) {
+class Game(context: Context, val scope: CoroutineScope) {
     var counter = 0
     val state = MutableStateFlow(0)
-    val background = Background()
+
+    //取得螢幕寬度與高度像素
+    private val displayMetrics = context.resources.displayMetrics
+    private val ScreenWidth = displayMetrics.widthPixels
+    private val ScreenHeight = displayMetrics.heightPixels
+    private val px = displayMetrics.density  //dp轉像素的倍率 (1dp的像素)
+
+    val background = Background(ScreenWidth)
 
     fun Play(){
         scope.launch {

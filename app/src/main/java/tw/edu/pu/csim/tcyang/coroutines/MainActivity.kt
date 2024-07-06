@@ -26,7 +26,7 @@ import tw.edu.pu.csim.tcyang.coroutines.ui.theme.CoroutinesTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val game = Game(lifecycleScope)
+        val game = Game(this, lifecycleScope)
 
         enableEdgeToEdge()
         setContent {
@@ -55,6 +55,19 @@ fun Greeting(modifier: Modifier, game: Game) {
                 contentScale = ContentScale.FillBounds,  //縮放符合螢幕寬度
                 modifier = Modifier
                     .offset { IntOffset(game.background.x1, 0) }
+            )
+        }
+
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.forest),
+                contentDescription = "背景2",
+
+                contentScale = ContentScale.FillBounds,  //縮放符合螢幕寬度
+                modifier = Modifier
+                    .offset { IntOffset(game.background.x2, 0) }
             )
         }
 
