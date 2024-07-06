@@ -18,19 +18,37 @@ class Game(context: Context, val scope: CoroutineScope) {
 
     val background = Background(ScreenWidth)
     val boy = Boy(ScreenWidth, ScreenHeight, px)
+    var virus = Virus(ScreenWidth, ScreenHeight, px)
 
     var score = 0
+    var isPlaying = false
 
     fun Play(){
+        score = 0
+        boy.Reset()
+        virus.Reset()
+        isPlaying = true
+
         scope.launch {
             counter = 0
-            while (counter < 2000) {
+            while (isPlaying) {
                 background.Roll()
                 if (counter % 3 == 0){
                     boy.Walk()
                     if (boy.ReachRight()){  //小男孩到右邊界，加1分
                         score ++
                     }
+
+                    virus.Fly()  //病毒飛行
+                    if (virus.ReachEdge()){  //病毒到邊界，加1分
+                        score ++
+                    }
+
+                    //判斷是否碰撞，結束遊戲
+                    if(boy.getRect().intersect(virus.getRect())) {
+                        isPlaying = false
+                    }
+
                 }
 
                 counter++

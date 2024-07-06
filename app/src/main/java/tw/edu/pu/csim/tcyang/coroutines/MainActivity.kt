@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -88,6 +89,20 @@ fun Greeting(modifier: Modifier, game: Game) {
                     .width(100.dp)
                     .height(220.dp)
                     .offset { IntOffset(game.boy.x, game.boy.y) }
+            )
+        }
+
+        val virusImage = arrayListOf(R.drawable.virus1, R.drawable.virus2)
+        //繪製病毒
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ){
+            Image(
+                painter = painterResource(id = virusImage[game.virus.pictNo]),
+                contentDescription = "病毒",
+                modifier = Modifier
+                    .size(100.dp)
+                    .offset { IntOffset(game.virus.x, game.virus.y) }
             )
         }
 
